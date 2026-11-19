@@ -1,0 +1,44 @@
+# Documentación del MSXimus
+
+Índice general. Cada capítulo dice para quién es, en qué estado está y de qué fuente sale, para que se pueda escribir y revisar por separado.
+
+El README del repositorio se queda corto a propósito: qué es, qué hace falta y cómo se instala. Todo lo demás vive aquí.
+
+## Cómo está organizada
+
+| Carpeta | Para quién | Qué contiene |
+|---|---|---|
+| `docs/manual/` | Quien tiene la placa y quiere usarla | Instalación, tarjeta SD, menú, ROMs, discos, WiFi, audio, vídeo, problemas |
+| `docs/tecnica/` | Quien quiere entender o modificar el core | Arquitectura, puertos de E/S, mapas de memoria, pack de BIOS, SD y DMA, actualización, changelog |
+
+Idioma: castellano. El manual de usuario se traducirá al inglés cuando esté cerrado, como el README. La referencia técnica se queda en castellano.
+
+## Manual de usuario (`docs/manual/`)
+
+| Nº | Capítulo | Estado | De dónde sale |
+|---|---|---|---|
+| 01 | [Qué es el MSXimus](manual/01-que-es.md): la máquina, lo que trae, lo que hace falta, lo que no es | **escrito** | README |
+| 02 | [Instalación](manual/02-instalacion.md): la flash de la placa, el pack, el BL616, el ESP32-C6 con su cableado, actualizar | **escrito** | README, top.v |
+| 03 | [La tarjeta SD](manual/03-tarjeta-sd.md): qué tarjeta, formato, qué poner y dónde, ficheros especiales, etiquetas, discos, editar desde el PC | **escrito** | menu_main.asm, srm_saves.asm, gm2.asm |
+| 04 | [El menú de arranque](manual/04-menu.md): flujo de arranque, teclas del logo, navegador, lanzar ROM, lanzar disco, Ajustes, WiFi, File-Hunter, Pruebas, mensajes | **escrito** | menu_main.asm, gm2.asm, srm_saves.asm, test_menu.asm |
+| 05 | [ROMs y mappers](manual/05-roms-mappers.md): la megaram, los siete mappers, cómo se decide, la SRAM y su guardado, el Game Master 2, ROMs que no lanzan | **escrito** | menu_main.asm, srm_saves.asm, gm2.asm, megaram.v |
+| 06 | [MSX-DOS y Nextor](manual/06-msxdos-nextor.md): las dos versiones, arrancar en DOS, discos de imagen, rendimiento, otros sistemas | **escrito** | sd_rw_ports.inc, LEEMEs |
+| 07 | [WiFi y File-Hunter](manual/07-wifi-file-hunter.md): qué pone el módulo, la tecla W, la tecla F paso a paso, mensajes, diagnóstico | **escrito** | menu_main.asm, ESP32-for-FPGA |
+| 08 | [Audio](manual/08-audio.md): los chips, mono y estéreo, el volumen, lo comprobado, lo que no hay | **escrito** | top.v (mezclador) |
+| 09 | [Vídeo](manual/09-video.md): la salida 720p, scanlines, 50 Hz, el panel F12, el VDP | **escrito** | msx2hdmi.sv, README |
+| 10 | [Problemas frecuentes](manual/10-problemas.md): por síntoma, con causa probable y qué hacer; herramientas de diagnóstico; cómo reportar | **escrito** | LEEMEs, test_menu.asm |
+| 11 | [Actualizar desde el MSX](manual/11-actualizar.md): MXUPDATE por internet o desde un fichero, Instalar actualización en Ajustes, qué es un `.UPD`, tiempos, mensajes (v3.8) | **escrito** | mxupdate.c, actualizar.asm |
+
+## Referencia técnica (`docs/tecnica/`)
+
+| Nº | Capítulo | Estado | De dónde sale |
+|---|---|---|---|
+| 01 | [Arquitectura](tecnica/01-arquitectura.md): la placa, diagrama de bloques, relojes y dominios, el bus y los slots, la memoria, el vídeo, el audio, los periféricos, la secuencia de arranque | **escrito** | top.v y sus módulos |
+| 02 | [Mapa de puertos de E/S](tecnica/02-puertos-es.md): la E/S conmutada 40h-4Fh con los tres dispositivos, los puertos de la SD, y el resto puerto a puerto | **escrito** | top.v, sdc_ioport.sv, swioports.vhd |
+| 03 | [Mapas de memoria](tecnica/03-mapas-memoria.md): slots y páginas, la SDRAM física banco a banco, la megaram y sus segmentos reservados, la flash, la DDR3 (sin usar) | **escrito** | top.v, megaram.v, gm2_slot1.v, desmontar_pack.py |
+| 04 | [El pack de BIOS](tecnica/04-pack-bios.md): qué es, las diez ROMs y su procedencia, el menú de 32 KB en ROM, construir, un pack para todos los cores | **escrito** | bios-msxnano-msximus |
+| 06 | [La tarjeta SD y la DMA](tecnica/06-sd-dma.md): el controlador, los cuatro caminos con sus velocidades, cómo funciona la DMA, los dos modos de destino, los contadores de mapper, quién usa qué, las firmas | **escrito** | sd_reader.sv, sdc_ioport.sv, sd_dma.sv, sd_rw_ports.inc |
+| 09 | [Changelog](tecnica/09-changelog.md): qué es esta línea, qué trae y en qué estado está | **escrito** | el repositorio |
+| 11 | [La actualización desde el MSX](tecnica/11-actualizacion.md): el puente de la flash (4Dh), el formato `.UPD`, el manifiesto, MXUPDATE por dentro, la web, los bancos (v3.8) | **escrito** | flash_bridge.v, mxupd.py, mxupdate.c, actualizar.asm |
+
+Además: `img/` (con las fotos de la carcasa en `img/carcasa/`) y `logo/`. La carcasa imprimible vive en [`carcasa/`](../carcasa/README.md), en la raíz del repositorio, con su propio README.
